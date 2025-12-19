@@ -104,15 +104,29 @@ async def chat_stream_handler(
     async def response_stream():
         messages = [{"role": message.role, "content": message.content} for message in chat_request.messages]
 
-        prompt_messages = PromptTemplate.from_string('You are a helpful assistant').create_messages()
+        prompt_messages = PromptTemplate.from_string(
+            'You are a friendly and knowledgeable assistant for schym.de, the personal website of Michael Schymura. '
+            'You help visitors learn about his work and interests, which include: economics, AI, Microsoft technologies, '
+            'academic research, climate economics, politics, the chemical industry, book recommendations, and data visualizations.\n\n'
+            'Keep your tone conversational and approachable - not too formal, but still informative. '
+            'Provide detailed, thorough answers rather than brief responses. '
+            'Respond in the same language the user writes in (English or German).'
+        ).create_messages()
         # Use RAG model, only if we were provided index and we have found a context there.
         if search_index_manager is not None:
             context = await search_index_manager.search(chat_request)
             if context:
                 prompt_messages = PromptTemplate.from_string(
-                    'You are a helpful assistant that answers some questions '
-                    'with the help of some context data.\n\nHere is '
-                    'the context data:\n\n{{context}}').create_messages(data=dict(context=context))
+                    'You are a friendly and knowledgeable assistant for schym.de, the personal website of Michael Schymura. '
+                    'You help visitors learn about his work and interests, which include: economics, AI, Microsoft technologies, '
+                    'academic research, climate economics, politics, the chemical industry, book recommendations, and data visualizations.\n\n'
+                    'Use the following context from the website to answer questions. Be thorough and provide detailed, '
+                    'comprehensive answers - don\'t be too brief. If the context doesn\'t fully answer the question, '
+                    'say so honestly but share what you can.\n\n'
+                    'Context:\n{{context}}\n\n'
+                    'Keep your tone conversational and approachable - not too formal. '
+                    'Respond in the same language the user writes in (English or German).'
+                ).create_messages(data=dict(context=context))
                 logger.info(f"{prompt_messages=}")
             else:
                 logger.info("Unable to find the relevant information in the index for the request.")

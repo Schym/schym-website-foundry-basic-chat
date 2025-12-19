@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Test</title>
+</head>
+<body>
+  <h1>API Test</h1>
+  <button onclick="testAPI()">Test API</button>
+  <pre id="output"></pre>
+  
+  <script>
+    async function testAPI() {
+      const output = document.getElementById('output');
+      output.textContent = 'Loading...';
+      
+      try {
+        const response = await fetch('https://chat.schym.de/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: [{ role: 'user', content: 'Hello' }]
+          })
+        });
+        
+        output.textContent = 'Status: ' + response.status + '\n\n';
+        
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let fullText = '';
+        
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          
+          const chunk = decoder.decode(value);
+          fullText += chunk;
+          output.textContent = 'Raw response:\n' + fullText;
+        }
+        
+        // Parse SSE
+        const lines = fullText.split('\n');
+        let parsed = '\n\nParsed messages:\n';
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              parsed += JSON.stringify(data) + '\n';
+            } catch(e) {}
+          }
+        }
+        output.textContent += parsed;
+        
+      } catch (error) {
+        output.textContent = 'Error: ' + error.message;
+      }
+    }
+  </script>
+</body>
+</html>

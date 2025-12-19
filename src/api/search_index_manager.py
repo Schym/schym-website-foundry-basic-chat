@@ -77,12 +77,12 @@ class SearchIndexManager:
             dimensions=self._dimensions,
             model=self._model
         ))['data'][0]['embedding']
-        vector_query = VectorizedQuery(vector=embedded_question, k_nearest_neighbors=5, fields="embedding")
+        vector_query = VectorizedQuery(vector=embedded_question, k_nearest_neighbors=5, fields="content_embedding")
         response = await self._get_client().search(
             vector_queries=[vector_query],
-            select=['token'],
+            select=['content_text'],
         )
-        results = [result['token'] async for result in response]
+        results = [result['content_text'] async for result in response]
         return "\n------\n".join(results)
     
     async def upload_documents(self, embeddings_file: str) -> None:

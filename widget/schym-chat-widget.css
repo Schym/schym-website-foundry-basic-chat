@@ -1,0 +1,101 @@
+/* Schym Chat Widget - Optional CSS (can be customized) */
+
+.schym-chat-widget {
+  transition: height 0.3s ease;
+}
+
+.schym-chat-widget.schym-chat-minimized {
+  height: 50px !important;
+}
+
+.schym-chat-widget.schym-chat-minimized .schym-chat-messages,
+.schym-chat-widget.schym-chat-minimized .schym-chat-input-area {
+  display: none;
+}
+
+.schym-chat-minimize {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.schym-chat-minimize:hover {
+  opacity: 1;
+}
+
+.schym-chat-light .schym-chat-minimize {
+  color: #333;
+}
+
+.schym-chat-dark .schym-chat-minimize {
+  color: #fff;
+}
+
+.schym-chat-send:hover {
+  background: #0056b3 !important;
+}
+
+.schym-chat-send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.schym-chat-dots {
+  animation: schym-blink 1.4s infinite;
+}
+
+@keyframes schym-blink {
+  0%, 80%, 100% { opacity: 0.3; }
+  40% { opacity: 1; }
+}
+
+/* Scrollbar styling */
+.schym-chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.schym-chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.schym-chat-messages::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.schym-chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* Floating chat button variant */
+.schym-chat-floating {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.schym-chat-floating.schym-chat-minimized {
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50% !important;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .schym-chat-widget {
+    max-width: 100% !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+  }
+  
+  .schym-chat-floating {
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100% !important;
+  }
+}

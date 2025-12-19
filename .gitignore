@@ -127,7 +127,6 @@ cython_debug/
 
 # IDEs and editors
 .idea/ # Uncomment if you want to ignore PyCharm settings
-.vscode/
 
 # Infrastructure and Deployment
 .azure

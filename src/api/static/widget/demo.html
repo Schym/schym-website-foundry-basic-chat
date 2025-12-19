@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schym Chat Widget Demo</title>
+  <link rel="stylesheet" href="schym-chat-widget.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 40px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    
+    h1 {
+      color: white;
+      margin-bottom: 20px;
+    }
+    
+    .demo-container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    
+    .demo-section {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 12px;
+    }
+    
+    .demo-section h2 {
+      color: white;
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🤖 Schym Chat Widget Demo</h1>
+  
+  <div class="demo-container">
+    <div class="demo-section">
+      <h2>Light Theme</h2>
+      <div id="chat-light"></div>
+    </div>
+    
+    <div class="demo-section">
+      <h2>Dark Theme</h2>
+      <div id="chat-dark"></div>
+    </div>
+  </div>
+
+  <script src="schym-chat-widget.js"></script>
+  <script>
+    // Light theme instance
+    SchymChat.init({
+      container: '#chat-light',
+      apiUrl: 'https://chat.schym.de',
+      theme: 'light',
+      title: 'Frag mich!',
+      placeholder: 'Deine Frage...',
+      welcomeMessage: 'Hallo! Ich bin der KI-Assistent von schym.de. Wie kann ich dir helfen?'
+    });
+
+    // For dark theme, create a second instance
+    const SchymChatDark = Object.assign({}, SchymChat);
+    SchymChatDark.messages = [];
+    SchymChatDark.init({
+      container: '#chat-dark',
+      apiUrl: 'https://chat.schym.de',
+      theme: 'dark',
+      title: 'Chat mit KI',
+      placeholder: 'Stelle eine Frage...',
+      welcomeMessage: 'Hi! Wie kann ich dir weiterhelfen?'
+    });
+  </script>
+</body>
+</html>
